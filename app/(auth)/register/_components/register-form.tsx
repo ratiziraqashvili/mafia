@@ -8,13 +8,13 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 const formSchema = z
   .object({
@@ -75,7 +75,7 @@ export const RegisterForm = () => {
             </FormItem>
           )}
         />
-         <FormField
+        <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
@@ -88,7 +88,7 @@ export const RegisterForm = () => {
             </FormItem>
           )}
         />
-         <FormField
+        <FormField
           control={form.control}
           name="password"
           render={({ field }) => (
@@ -101,7 +101,7 @@ export const RegisterForm = () => {
             </FormItem>
           )}
         />
-         <FormField
+        <FormField
           control={form.control}
           name="confirmPassword"
           render={({ field }) => (
@@ -114,9 +114,23 @@ export const RegisterForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="mt-4 bg-(--red) hover:bg-red-700 p-6 text-lg hover:cursor-pointer">
+        <Button
+          type="submit"
+          className="mt-4 bg-(--red) hover:bg-red-700 p-6 text-lg hover:cursor-pointer"
+        >
           Create Account
         </Button>
+        <div className="flex items-center justify-center gap-1">
+          <span className="text-sm text-muted-foreground font-medium">
+            Already have an account?{" "}
+          </span>
+          <Link
+            href="/login"
+            className="text-(--red) hover:text-red-300 transition font-medium"
+          >
+            Login here
+          </Link>
+        </div>
       </form>
     </Form>
   );

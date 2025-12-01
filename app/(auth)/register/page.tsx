@@ -3,7 +3,7 @@ import { RegisterForm } from "./_components/register-form";
 
 const RegisterPage = () => {
   return (
-    <div className="bg-[#111] min-h-screen flex flex-col items-center justify-center gap-10">
+    <div className="min-h-screen flex flex-col items-center justify-center gap-10">
       <div className="flex flex-col gap-3 items-center">
         <div className="flex items-center gap-3">
           <SkullIcon color="var(--red)" size={50} />
@@ -18,7 +18,9 @@ const RegisterPage = () => {
       </div>
       <RegisterForm />
       <div>
-
+        <span className="text-sm text-muted-foreground">
+          By creating an account, you agree to our Terms & Privacy Policy
+        </span>
       </div>
     </div>
   );

@@ -77,7 +77,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   /* Manually added variables */
-  --red: #e01
+  --red: #e01;
 }
 
 .dark {
@@ -119,6 +119,6 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#111]  text-[#dde];
   }
 }
