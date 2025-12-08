@@ -1,10 +1,7 @@
 "use client";
 
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -14,101 +11,70 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
+import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import z from "zod";
 
-const formSchema = z
-  .object({
-    username: z
-      .string()
-      .min(3, {
-        message: "Username must be at least 3 characters long",
-      })
-      .max(20, {
-        message: "Username must be at most 20 characters long",
-      }),
-    email: z.string().email({
-      message: "Invalid email address",
-    }),
-    password: z
-      .string()
-      .min(8, {
-        message: "Password must be between 8 and 30 characters long",
-      })
-      .max(30, {
-        message: "Password must be between 8 and 30 characters long",
-      }),
-    confirmPassword: z.string().min(8).max(30),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+const formSchema = z.object({
+  email: z.string().min(1, {
+    message: "Please enter your email!",
+  }),
+  password: z.string().min(1, {
+    message: "Please enter your password!",
+  }),
+  rememberMe: z.boolean(),
+});
 
-export const RegisterForm = () => {
+export const LoginForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      rememberMe: false,
     },
   });
 
-  const onRegister = async (values: z.infer<typeof formSchema>) => {
+  const onLogin = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    await authClient.signUp.email(
+    await authClient.signIn.email(
       {
-        username: values.username,
-        name: values.username,
         email: values.email,
         password: values.password,
-        image:
-          "https://www.mafia.ge/templates/assets/images/demo/users/user.jpg",
-        callbackURL: "/",
+        rememberMe: values.rememberMe,
       },
       {
         onSuccess: () => {
           router.push("/");
-          console.log("Succesfully registered");
+          console.log("You are in")
         },
         onError: (ctx) => {
-          toast.error(ctx.error.message);
-          console.log(ctx)
+          toast.error("Invalid email or password");
         },
         onResponse: () => {
           setIsLoading(false);
         },
       }
     );
+
+    console.log(values);
   };
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onRegister)}
+        onSubmit={form.handleSubmit(onLogin)}
         className="bg-[#171717] rounded-2xl p-7 border border-muted-foreground sm:w-[70%] sm:max-w-md w-[80%] flex flex-col gap-4"
       >
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-[#dde]">Username</FormLabel>
-              <FormControl>
-                <Input placeholder="Choose a username" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="email"
@@ -137,13 +103,17 @@ export const RegisterForm = () => {
         />
         <FormField
           control={form.control}
-          name="confirmPassword"
+          name="rememberMe"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-[#dde]">Confirm Password</FormLabel>
+            <FormItem className="flex items-center">
               <FormControl>
-                <Input type="password" placeholder="••••••••" {...field} />
+                <Checkbox
+                  className="pb-3"
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
               </FormControl>
+              <Label className="text-[#dde]">Remember Me</Label>
               <FormMessage />
             </FormItem>
           )}
@@ -153,17 +123,17 @@ export const RegisterForm = () => {
           className="mt-4 bg-(--red) hover:bg-red-700 p-6 text-lg hover:cursor-pointer"
           disabled={isLoading}
         >
-          Create Account
+          Login
         </Button>
         <div className="flex items-center justify-center gap-1">
           <span className="text-sm text-muted-foreground font-medium">
-            Already have an account?{" "}
+            Don't have an account?
           </span>
           <Link
-            href="/login"
+            href="/register"
             className="text-(--red) hover:text-red-300 transition font-medium"
           >
-            Login here
+            Create an account
           </Link>
         </div>
       </form>
