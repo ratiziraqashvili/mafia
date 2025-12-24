@@ -1,6 +1,6 @@
+import { GameControl } from "@/components/game-control";
 import { HomeCards } from "@/components/home-cards";
 import { MafiaHeader } from "@/components/mafia-header";
-import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -13,11 +13,7 @@ export default function Home() {
         </h2>
       </div>
       <HomeCards />
-      <div className="mt-5">
-        <Button variant="destructive" size="lg" className="w-40 text-md">
-          Play Now
-        </Button>
-      </div>
+      <GameControl />
       <div className="rounded-lg bg-[#131215] p-5 border border-gray-800 gap-3 max-w-2xl">
         <h3 className="text-2xl mb-3">How to Play</h3>
         <ul className="pl-5 list-disc marker:text-red-500">
