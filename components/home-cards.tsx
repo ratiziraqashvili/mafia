@@ -2,7 +2,7 @@ import { Card } from "./card";
 
 export const HomeCards = () => {
   return (
-    <div className="grid grid-rows-3 lg:grid-cols-3 gap-5">
+    <div className="grid grid-rows-3 lg:grid-rows-1 lg:grid-cols-3 gap-5 max-w-4xl">
       <Card
         heading="Secret Roles"
         paragraph="Play as Mafia, Villager, Doctor, or Detective. Each role has unique abilities."
