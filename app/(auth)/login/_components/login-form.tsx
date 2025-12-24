@@ -55,18 +55,16 @@ export const LoginForm = () => {
       {
         onSuccess: () => {
           router.push("/");
-          console.log("You are in")
         },
         onError: (ctx) => {
           toast.error("Invalid email or password");
+          ctx.error.message && toast.error(ctx.error.message)
         },
         onResponse: () => {
           setIsLoading(false);
         },
       }
     );
-
-    console.log(values);
   };
 
   return (

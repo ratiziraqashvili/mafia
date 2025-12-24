@@ -77,11 +77,9 @@ export const RegisterForm = () => {
       {
         onSuccess: () => {
           router.push("/");
-          console.log("Succesfully registered");
         },
         onError: (ctx) => {
           toast.error(ctx.error.message);
-          console.log(ctx)
         },
         onResponse: () => {
           setIsLoading(false);
