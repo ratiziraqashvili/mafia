@@ -1,9 +1,19 @@
+"use client";
+
+import { useModal } from "@/hooks/use-modal-store";
 import { Button } from "./ui/button";
 
 export const GameControl = () => {
+  const { onOpen } = useModal();
+
+  const onJoinGameModalOpen = () => {
+    onOpen("joinGame");
+  };
+
   return (
     <div className="mt-5">
       <Button
+        onClick={onJoinGameModalOpen}
         size="lg"
         className="w-40 text-md bg-[#300e0f] hover:opacity-80 hover:bg-[#300e0f]"
       >
