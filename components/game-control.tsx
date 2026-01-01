@@ -10,6 +10,10 @@ export const GameControl = () => {
     onOpen("joinGame");
   };
 
+  const onCreateGameModalOpen = () => {
+    onOpen("createGame");
+  };
+
   return (
     <div className="mt-5">
       <Button
@@ -20,6 +24,7 @@ export const GameControl = () => {
         Join Game
       </Button>
       <Button
+        onClick={onCreateGameModalOpen}
         size="lg"
         className="w-40 text-md ml-4 bg-[#300e0f]  hover:opacity-80 hover:bg-[#300e0f]"
       >

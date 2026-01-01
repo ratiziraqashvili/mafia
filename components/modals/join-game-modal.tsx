@@ -40,7 +40,7 @@ export const JoinGameModal = () => {
           <DialogClose asChild>
             <Button>Cancel</Button>
           </DialogClose>
-          <DialogClose>
+          <DialogClose asChild>
             <Button onClick={onGameCode}>Join</Button>
           </DialogClose>
         </div>

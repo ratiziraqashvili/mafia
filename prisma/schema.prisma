@@ -69,3 +69,24 @@ model Verification {
 
   @@index([identifier])
 }
+
+enum GameMode {
+  SERIAL_KILLER
+  YAKUZA
+}
+
+enum GameVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+model GameSession {
+  id String @id @default(uuid())
+  gameCode String @unique @db.VarChar(6)
+  sessionName String @db.VarChar(30)
+  mode GameMode
+  visibility GameVisibility
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
