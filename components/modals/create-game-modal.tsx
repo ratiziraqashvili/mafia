@@ -54,15 +54,13 @@ export const CreateGameModal = () => {
     mutationFn: createGame,
     onSuccess: (data) => {
       onClose();
-      router.push(`/game/${data.id}`);
+      router.push(`/game/${data.gameId}`);
       form.reset();
     },
     onError: () => {
       console.log("Error creating game");
     },
   });
-
-  console.log("data ---->", data);
 
   const handleClose = () => {
     onClose();

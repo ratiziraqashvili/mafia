@@ -9,17 +9,11 @@ export async function POST(req: NextRequest) {
             headers: req.headers
         }); 
 
-        console.log("session ---->", session)
-
         if (!session?.user) {
             return new NextResponse("Unauthorized", { status: 401 })
         }
 
         const { sessionName, mode, visibility } = await req.json();
-
-        console.log("sessionName ---->", sessionName)
-        console.log("mode ---->", mode)
-        console.log("visibility ---->", visibility)
 
         if (!sessionName || !mode || !visibility) {
             return new NextResponse("Bad Request", { status: 400 })
@@ -37,8 +31,6 @@ export async function POST(req: NextRequest) {
             }))
         } while (exists);
 
-        console.log('codeeeeeeeeeeeeeeeee', gameCode)
-
         const gameSession = await prisma.gameSession.create({
             data: {
                 gameCode,
@@ -46,13 +38,18 @@ export async function POST(req: NextRequest) {
                 mode,
                 visibility,
                 hostId: session.user.id,
-                
+                players: {
+                    create: {
+                        userId: session.user.id,
+                        isHost: true,
+                        seatNumber: 1
+                    }
+                }
             }
         })
 
-        console.log("gameSession ---->", gameSession)
-
-        return new NextResponse(JSON.stringify(gameSession), { status: 200 })
+        return new NextResponse(JSON.stringify({ gameId: gameSession.id, gameCode: gameSession.gameCode }), { status: 201 })
+        
     } catch (error) {
         console.error("error in server [API_CREATE_GAME]", error)
         return new NextResponse("Internal Server Error", { status: 500 })
