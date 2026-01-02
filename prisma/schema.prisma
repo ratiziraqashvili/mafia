@@ -8,18 +8,20 @@ datasource db {
 }
 
 model User {
-  id            String    @id
+  id            String        @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean       @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
   sessions      Session[]
   accounts      Account[]
+  gameSessions  GameSession[]
 
   username        String?
   displayUsername String?
+  players         Player[]
 
   @@unique([email])
   @@unique([username])
@@ -80,14 +82,54 @@ enum GameVisibility {
   PRIVATE
 }
 
-model GameSession {
-  id String @id @default(uuid())
-  hostId String
-  gameCode String @unique @db.VarChar(6)
-  sessionName String @db.VarChar(30)
-  mode GameMode
-  visibility GameVisibility
+enum GameStatus {
+  LOBBY
+  STARTING
+  IN_PROGRESS
+  FINISHED
+}
 
+model GameSession {
+  id          String         @id @default(uuid())
+  gameCode    String         @unique @db.VarChar(6)
+  sessionName String         @db.VarChar(30)
+  mode        GameMode
+  visibility  GameVisibility
+  status      GameStatus     @default(LOBBY)
+
+  hostId String
+  host   User   @relation(fields: [hostId], references: [id], onDelete: Cascade)
+
+  players   Player[]
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum PlayerRole {
+  UNKNOWN
+  CIVILIAN
+  SERIAL_KILLER
+  YAKUZA
+  SHOGUN
+  DETECTIVE
+  DOCTOR
+}
+
+model Player {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  gameId String
+  game   GameSession @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  role    PlayerRole @default(UNKNOWN)
+  isAlive Boolean    @default(true)
+
+  seatNumber Int
+  joinedAt   DateTime @default(now())
+
+  @@unique([userId, gameId])
 }

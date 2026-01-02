@@ -46,6 +46,7 @@ export async function POST(req: NextRequest) {
                 mode,
                 visibility,
                 hostId: session.user.id,
+                
             }
         })
 
