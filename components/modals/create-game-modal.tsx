@@ -30,33 +30,39 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/lib/api/client";
+import { GameMode, GameVisibility } from "@/generated/prisma/enums";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   sessionName: z
     .string()
     .min(1, "Session name is required")
     .max(30, "Session name must be at most 30 characters long"),
-  mode: z.enum(["serial-killer", "yakuza"]),
-  visibility: z.enum(["public", "private"]),
+  mode: z.enum(GameMode),
+  visibility: z.enum(GameVisibility),
 });
 
 export const CreateGameModal = () => {
   const { isOpen, type, onClose } = useModal();
+  const router = useRouter();
 
   const createGame = async (values: z.infer<typeof formSchema>) => {
     return await api.post("/create/game", values).then((res) => res.data);
   };
 
-  const { mutate, isPending, isError } = useMutation({
+  const { mutate, isPending, isError, data } = useMutation({
     mutationFn: createGame,
-    onSuccess: () => {
+    onSuccess: (data) => {
       onClose();
+      router.push(`/game/${data.id}`);
       form.reset();
     },
     onError: () => {
       console.log("Error creating game");
     },
   });
+
+  console.log("data ---->", data);
 
   const handleClose = () => {
     onClose();
@@ -69,8 +75,8 @@ export const CreateGameModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       sessionName: "",
-      mode: "serial-killer",
-      visibility: "public",
+      mode: GameMode.SERIAL_KILLER,
+      visibility: GameVisibility.PUBLIC,
     },
   });
 
@@ -119,13 +125,13 @@ export const CreateGameModal = () => {
                       value={field.value}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a mode" />
+                        <SelectValue placeholder="Serial Killer" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="serial-killer">
+                        <SelectItem value={GameMode.SERIAL_KILLER}>
                           Serial Killer
                         </SelectItem>
-                        <SelectItem value="yakuza">Yakuza</SelectItem>
+                        <SelectItem value={GameMode.YAKUZA}>Yakuza</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -146,11 +152,15 @@ export const CreateGameModal = () => {
                       value={field.value}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a visibility" />
+                        <SelectValue placeholder="Public" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="public">Public</SelectItem>
-                        <SelectItem value="private">Private</SelectItem>
+                        <SelectItem value={GameVisibility.PUBLIC}>
+                          Public
+                        </SelectItem>
+                        <SelectItem value={GameVisibility.PRIVATE}>
+                          Private
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>

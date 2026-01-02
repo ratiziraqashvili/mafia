@@ -82,6 +82,7 @@ enum GameVisibility {
 
 model GameSession {
   id String @id @default(uuid())
+  hostId String
   gameCode String @unique @db.VarChar(6)
   sessionName String @db.VarChar(30)
   mode GameMode
