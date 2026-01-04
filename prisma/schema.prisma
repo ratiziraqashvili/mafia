@@ -133,5 +133,5 @@ model Player {
   seatNumber Int
   joinedAt   DateTime @default(now())
 
-  @@unique([userId, gameId, seatNumber])
+  @@unique([userId, gameId])
 }

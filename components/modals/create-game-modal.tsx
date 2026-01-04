@@ -47,10 +47,10 @@ export const CreateGameModal = () => {
   const router = useRouter();
 
   const createGame = async (values: z.infer<typeof formSchema>) => {
-    return await api.post("/create/game", values).then((res) => res.data);
+    return await api.post("/game/create", values).then((res) => res.data);
   };
 
-  const { mutate, isPending, isError, data } = useMutation({
+  const { mutate, isPending, isError, error } = useMutation({
     mutationFn: createGame,
     onSuccess: (data) => {
       onClose();
@@ -168,7 +168,7 @@ export const CreateGameModal = () => {
             />
             {isError && (
               <p className="text-sm text-red-500 text-center">
-                Failed to create game
+                {error.message}
               </p>
             )}
             <div className="flex justify-center gap-2">

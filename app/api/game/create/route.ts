@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { generateGameCode } from "@/lib/generate-game-code";
+import { generateSeatNumber } from "@/lib/generate-seat-number";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -42,7 +43,7 @@ export async function POST(req: NextRequest) {
                     create: {
                         userId: session.user.id,
                         isHost: true,
-                        seatNumber: 1
+                        seatNumber: Math.floor(Math.random() * 12) + 1,
                     }
                 }
             }
