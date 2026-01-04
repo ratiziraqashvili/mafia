@@ -1,4 +1,5 @@
 import { auth } from "@/lib/auth";
+import { generateSeatNumber } from "@/lib/generate-seat-number";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -56,6 +57,33 @@ export async function POST(req: Request) {
             { status: 200 }
         )
     }
+
+    const playerCount = await prisma.player.count({
+        where: {
+            gameId,
+        }
+    })
+
+    if (playerCount >= 12) {
+        return new NextResponse("Game is full", {
+            status: 400,
+        })
+    }
+
+    const seatNumber = await generateSeatNumber(gameId)
+
+    await prisma.player.create({
+        data: {
+            userId: session.user.id,
+            gameId,
+            seatNumber,
+        }
+    })
+
+    return NextResponse.json(
+        { gameId },
+        { status: 201 }
+    )
     
   } catch (error) {
     console.log("[API_GAME_JOIN]", error);
