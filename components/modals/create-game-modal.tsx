@@ -1,10 +1,9 @@
-"use client";
-
 import { useModal } from "@/hooks/use-modal-store";
 import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
@@ -50,22 +49,21 @@ export const CreateGameModal = () => {
     return await api.post("/game/create", values).then((res) => res.data);
   };
 
-  const { mutate, isPending, isError, error } = useMutation({
-    mutationFn: createGame,
-    onSuccess: (data) => {
-      onClose();
-      router.push(`/game/${data.gameId}`);
-      form.reset();
-    },
-    onError: () => {
-      console.log("Error creating game");
-    },
-  });
-
   const handleClose = () => {
     onClose();
     form.reset();
   };
+
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: createGame,
+    onSuccess: (data) => {
+      handleClose();
+      router.push(`/game/${data.gameId}`);
+    },
+    onError: (e) => {
+      console.error("Error creating game", e);
+    },
+  });
 
   const isModalOpen = isOpen && type === "createGame";
 
@@ -92,6 +90,9 @@ export const CreateGameModal = () => {
           >
             <DialogHeader>
               <DialogTitle>Create Game</DialogTitle>
+              <DialogDescription>
+                Create a new game to start playing
+              </DialogDescription>
             </DialogHeader>
             <FormField
               control={form.control}

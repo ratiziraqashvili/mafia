@@ -31,15 +31,17 @@ export async function POST(req: Request) {
     })
 
     if (!gameSession) {
-        return new NextResponse("Game not found", {
-            status: 404
-        })
+        return NextResponse.json(
+        { message: "Game not found" },
+        { status: 404 }
+    )
     }
 
     if (gameSession.status !== "LOBBY") {
-        return new NextResponse("Game is already started", {
-            status: 400
-        })
+        return NextResponse.json(
+            { message: "Game is already started" },
+            { status: 400 }
+        )
     }
 
     const existingPlayer = await prisma.player.findUnique({
@@ -65,9 +67,10 @@ export async function POST(req: Request) {
     })
 
     if (playerCount >= 12) {
-        return new NextResponse("Game is full", {
-            status: 400,
-        })
+        return NextResponse.json(
+            { message: "Game is full" },
+            { status: 400 }
+        )
     }
 
     const seatNumber = await generateSeatNumber(gameId)
@@ -86,9 +89,10 @@ export async function POST(req: Request) {
     )
     
   } catch (error) {
-    console.log("[API_GAME_JOIN]", error);
-    return new Response("Internal Server Error", {
-      status: 500,
-    });
+    console.error("[API_GAME_JOIN]", error);
+    return NextResponse.json(
+        { message: "Internal Server Error" },
+        { status: 500 }
+    )
   }   
 }

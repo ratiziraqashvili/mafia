@@ -19,7 +19,7 @@ export const GameControl = () => {
       <Button
         onClick={onJoinGameModalOpen}
         size="lg"
-        className="w-40 text-md bg-[#300e0f] hover:opacity-80 hover:bg-[#300e0f]"
+        variant="mafia"
       >
         Join Game
       </Button>
