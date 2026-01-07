@@ -5,7 +5,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { authClient } from "@/lib/auth-client";
@@ -31,7 +30,6 @@ export const SettingsDropdown = () => {
         <Menu />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 ml-2" align="start">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuGroup>
           <Link href="/profile">
             <DropdownMenuItem>Profile</DropdownMenuItem>

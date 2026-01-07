@@ -23,7 +23,7 @@ export const JoinGameModal = () => {
   const joinGame = async () => {
     return await api
       .post("/game/join", {
-        gameId: gameCode,
+        gameCode,
       })
       .then((res) => res.data);
   };
@@ -35,9 +35,9 @@ export const JoinGameModal = () => {
 
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: joinGame,
-    onSuccess: (gameId) => {
+    onSuccess: (data) => {
       handleClose();
-      router.push(`/game/${gameId}`);
+      router.push(`/game/${data.gameId}`);
     },
     onError: (e) => {
       console.error("Error joining game", e);

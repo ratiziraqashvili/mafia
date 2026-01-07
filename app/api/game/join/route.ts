@@ -16,9 +16,9 @@ export async function POST(req: Request) {
     }
 
      const body = await req.json();
-     const { gameId } = body;
+     const { gameCode } = body;
 
-    if (!gameId) {
+    if (!gameCode) {
         return new NextResponse("Bad request", {
             status: 400,
         })
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
     const gameSession = await prisma.gameSession.findUnique({
         where: {
-            id: gameId
+            gameCode
         }
     })
 
@@ -48,21 +48,21 @@ export async function POST(req: Request) {
         where: {
             userId_gameId: {
                 userId: session.user.id,
-                gameId,
+                gameId: gameSession.id,
             }
         }
     })
 
     if (existingPlayer) {
         return NextResponse.json(
-            { gameId },
+            { gameId: gameSession.id },
             { status: 200 }
         )
     }
 
     const playerCount = await prisma.player.count({
         where: {
-            gameId,
+            gameId: gameSession.id,
         }
     })
 
@@ -73,18 +73,18 @@ export async function POST(req: Request) {
         )
     }
 
-    const seatNumber = await generateSeatNumber(gameId)
+    const seatNumber = await generateSeatNumber(gameSession.id)
 
     await prisma.player.create({
         data: {
             userId: session.user.id,
-            gameId,
+            gameId: gameSession.id,
             seatNumber,
         }
     })
 
     return NextResponse.json(
-        { gameId },
+        { gameId: gameSession.id },
         { status: 201 }
     )
     
