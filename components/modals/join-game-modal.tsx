@@ -37,7 +37,7 @@ export const JoinGameModal = () => {
     mutationFn: joinGame,
     onSuccess: (data) => {
       handleClose();
-      router.push(`/game/${data.gameId}`);
+      router.push(`/lobby/${data.gameId}`);
     },
     onError: (e) => {
       console.error("Error joining game", e);
