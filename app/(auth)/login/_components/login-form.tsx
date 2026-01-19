@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -58,12 +58,12 @@ export const LoginForm = () => {
         },
         onError: (ctx) => {
           toast.error("Invalid email or password");
-          ctx.error.message && toast.error(ctx.error.message)
+          ctx.error.message && toast.error(ctx.error.message);
         },
         onResponse: () => {
           setIsLoading(false);
         },
-      }
+      },
     );
   };
 

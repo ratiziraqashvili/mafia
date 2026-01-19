@@ -1,6 +1,6 @@
-import { auth } from "@/lib/auth";
-import { generateGameCode } from "@/lib/generate-game-code";
-import { generateSeatNumber } from "@/lib/generate-seat-number";
+import { auth } from "@/lib/auth/auth";
+import { generateGameCode } from "@/lib/game/generate-game-code";
+import { generateSeatNumber } from "@/lib/game/generate-seat-number";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 

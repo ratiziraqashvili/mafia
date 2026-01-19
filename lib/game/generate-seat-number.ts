@@ -1,4 +1,4 @@
-import { prisma } from "./prisma";
+import { prisma } from "../prisma";
 
 export const generateSeatNumber = async (gameId: string) => {
     const MAX_SEATS = 12;

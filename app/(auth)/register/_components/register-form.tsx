@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -84,7 +84,7 @@ export const RegisterForm = () => {
         onResponse: () => {
           setIsLoading(false);
         },
-      }
+      },
     );
   };
 

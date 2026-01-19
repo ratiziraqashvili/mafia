@@ -2,10 +2,11 @@ import { Button } from "@/components/ui/button";
 import { LogOut, Play, Users } from "lucide-react";
 
 interface LobbyHeaderProps {
+  isHost: boolean;
   playerCount: number;
 }
 
-export const LobbyHeader = ({ playerCount }: LobbyHeaderProps) => {
+export const LobbyHeader = ({ playerCount, isHost }: LobbyHeaderProps) => {
   return (
     <div className="pt-8 flex justify-between items-center">
       <div className="flex flex-col gap-2">
@@ -20,7 +21,7 @@ export const LobbyHeader = ({ playerCount }: LobbyHeaderProps) => {
           <LogOut />
           <span>Leave Lobby</span>
         </Button>
-        <Button variant="destructive">
+        <Button disabled={!isHost} variant="destructive">
           <Play />
           <span>Start Game</span>
         </Button>

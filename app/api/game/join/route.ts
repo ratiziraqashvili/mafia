@@ -1,6 +1,6 @@
-import { auth } from "@/lib/auth";
-import { generateSeatNumber } from "@/lib/generate-seat-number";
-import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth/auth";
+import { generateSeatNumber } from "@/lib/game/generate-seat-number";
+import { prisma } from "@/lib/db/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     });
 
     if (!session?.user) {
-      return new Response("Unauthorized", {
+      return new NextResponse("Unauthorized", {
         status: 401,
       });
     }
