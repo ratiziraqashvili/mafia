@@ -37,13 +37,6 @@ export async function POST(req: Request) {
     )
     }
 
-    if (gameSession.status !== "LOBBY") {
-        return NextResponse.json(
-            { message: "Game is already started" },
-            { status: 400 }
-        )
-    }
-
     const existingPlayer = await prisma.player.findUnique({
         where: {
             userId_gameId: {
@@ -57,6 +50,13 @@ export async function POST(req: Request) {
         return NextResponse.json(
             { gameId: gameSession.id },
             { status: 200 }
+        )
+    }
+
+    if (gameSession.status !== "LOBBY" && !existingPlayer) {
+        return NextResponse.json(
+            { message: "Game is already started" },
+            { status: 400 }
         )
     }
 
