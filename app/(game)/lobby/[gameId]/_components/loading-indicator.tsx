@@ -20,7 +20,7 @@ export const LoadingIndicator = ({ playerCount }: LoadingIndicatorProps) => {
         </p>
       )}
       {playerCount < 12 ? (
-        <Badge className="text-muted-foreground space-x-1" variant="outline">
+        <Badge className="space-x-1" variant="outline">
           <Clock />
           <span>{playerCount}/12 ready</span>
         </Badge>

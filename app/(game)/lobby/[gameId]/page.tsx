@@ -5,10 +5,19 @@ import { isCurrentUserHost } from "@/lib/is-host";
 import { getCurrentUser } from "@/lib/get-current-user";
 import { LobbyPlayers } from "./_components/lobby-players";
 import { getCurrentPlayers } from "@/lib/game/get-current-players";
+import { prisma } from "@/lib/db/prisma";
 
 const LobbyPage = async ({ params }: { params: { gameId: string } }) => {
   const currentUser = await getCurrentUser()
   const gameId = (await params).gameId;
+  const hostId = await prisma.gameSession.findFirst({
+    where: {
+      id: gameId
+    },
+    select: {
+      hostId: true
+    }
+  })
   const playerCount = await getPlayerCount(gameId);
   const isHost = await isCurrentUserHost(currentUser?.id!, gameId);
   const currentPlayers = await getCurrentPlayers(gameId);
@@ -17,7 +26,7 @@ const LobbyPage = async ({ params }: { params: { gameId: string } }) => {
     <div className="h-screen max-w-6xl mx-auto flex flex-col gap-8 lg:px-2 px-5">
       <LobbyHeader isHost={isHost} playerCount={playerCount} />
       <LoadingIndicator playerCount={playerCount} />
-      <LobbyPlayers players={currentPlayers} isReady={false} />
+      <LobbyPlayers hostId={hostId?.hostId} isHost={isHost} players={currentPlayers} isReady={false} />
     </div>
   );
 };
