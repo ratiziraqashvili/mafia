@@ -7,7 +7,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const avatarVariants = cva(
-  "relative flex shrink-0 overflow-hidden rounded-full",
+  "relative flex shrink-0 rounded-full",
   {
     variants: {
       size: {
@@ -60,7 +60,7 @@ function AvatarFallback({
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
       className={cn(
-        "flex size-full items-center justify-center rounded-full bg-linear-to-br from-[#390f0f] via-[#2a1616] to-[#261617]",
+        "flex size-full items-center justify-center rounded-full bg-linear-to-br from-red-950 to-zinc-900",
         className,
       )}
       {...props}

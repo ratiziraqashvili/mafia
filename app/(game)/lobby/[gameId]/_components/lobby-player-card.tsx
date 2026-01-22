@@ -20,11 +20,22 @@ export const LobbyPlayerCard = ({
   return (
     <div
       className={cn(
-        "bg-[#151518] p-6 flex items-center gap-2 rounded-xl border-2 transition-all border-zinc-800 hover:border-zinc-700 backdrop-blur-sm",
+        "bg-[#151518] p-6 flex items-center gap-2 rounded-xl border-2 transition-all  backdrop-blur-sm",
+        isReady
+          ? "border-green-900/50 bg-green-950/10 shadow-lg shadow-green-900/10"
+          : "border-zinc-800 hover:border-zinc-700",
       )}
     >
-      <div>
-        <ProfilePicture src={profilePicture} username={username} size="2xl" />
+      <div className="relative">
+        <ProfilePicture
+          className={cn(
+            "border-2  bg-black relative",
+            isReady ? "border-green-700" : "border-zinc-700",
+          )}
+          src={profilePicture}
+          username={username}
+          size="2xl"
+        />
       </div>
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2">
@@ -32,7 +43,7 @@ export const LobbyPlayerCard = ({
           {isHost && <Crown color="#e3a701" size={16} />}
         </div>
         <div className="space-x-2">
-          {!isReady ? (
+          {isReady ? (
             <Badge variant="success">Ready</Badge>
           ) : (
             <Badge variant="outline">Waiting</Badge>
