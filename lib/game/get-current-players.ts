@@ -9,7 +9,7 @@ export const getCurrentPlayers = async (gameId: string) => {
             user: {
                 select: {
                     username: true,
-                    image: true,        
+                    image: true,  
                 }
             }
         }

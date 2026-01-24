@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { LogOut, Play, Users } from "lucide-react";
+import { Play, Users } from "lucide-react";
+import { LeaveGameAlert } from "./leave-game-alert";
 
 interface LobbyHeaderProps {
   isHost: boolean;
@@ -17,10 +18,7 @@ export const LobbyHeader = ({ playerCount, isHost }: LobbyHeaderProps) => {
         </h3>
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="secondary">
-          <LogOut />
-          <span>Leave Lobby</span>
-        </Button>
+        <LeaveGameAlert />
         <Button disabled={!isHost} variant="destructive">
           <Play />
           <span>Start Game</span>

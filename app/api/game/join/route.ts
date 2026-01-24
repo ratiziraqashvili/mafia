@@ -53,6 +53,22 @@ export async function POST(req: Request) {
         )
     }
 
+    const existingGame = await prisma.player.findFirst({
+        where: {
+            gameId: {
+                not: gameSession.id,
+            },
+            isAlive: true
+        }
+    })
+
+    if (existingGame) {
+        return NextResponse.json(
+            { message: "You are already in the game" },
+            { status: 400 }
+        )
+    }
+
     if (gameSession.status !== "LOBBY" && !existingPlayer) {
         return NextResponse.json(
             { message: "Game is already started" },
