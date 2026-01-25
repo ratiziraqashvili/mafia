@@ -10,10 +10,28 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { api } from "@/lib/api/client";
+import { useMutation } from "@tanstack/react-query";
 import { LogOut } from "lucide-react";
 
-export const LeaveGameAlert = () => {
-    
+interface LeaveGameAlertProps {
+  gameId: string;
+}
+
+export const LeaveGameAlert = ({ gameId }: LeaveGameAlertProps) => {
+  const onLeave = async () => {
+    return await api.delete("/")
+  };
+
+  const { isPending, isError, error, data } = useMutation({
+    mutationFn: onLeave,
+    onSuccess: (data) => {
+
+    },
+    onError: (e) => {
+
+    }
+  });
 
   return (
     <AlertDialog>
@@ -32,7 +50,9 @@ export const LeaveGameAlert = () => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="">
-          <AlertDialogCancel className="bg-black hover:bg-black/80">Cancel</AlertDialogCancel>
+          <AlertDialogCancel className="bg-black hover:bg-black/80">
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction className="">Leave</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

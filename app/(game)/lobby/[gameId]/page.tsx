@@ -37,7 +37,7 @@ const LobbyPage = async ({ params }: { params: { gameId: string } }) => {
 
   return (
     <div className="h-screen max-w-6xl mx-auto flex flex-col gap-8 lg:px-2 px-5">
-      <LobbyHeader isHost={isHost} playerCount={playerCount} />
+      <LobbyHeader gameId={gameId} isHost={isHost} playerCount={playerCount} />
       <LoadingIndicator playerCount={playerCount} />
       <LobbyPlayers
         hostId={game?.hostId}

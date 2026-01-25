@@ -5,9 +5,10 @@ import { LeaveGameAlert } from "./leave-game-alert";
 interface LobbyHeaderProps {
   isHost: boolean;
   playerCount: number;
+  gameId: string;
 }
 
-export const LobbyHeader = ({ playerCount, isHost }: LobbyHeaderProps) => {
+export const LobbyHeader = ({ playerCount, isHost, gameId }: LobbyHeaderProps) => {
   return (
     <div className="pt-8 flex justify-between items-center">
       <div className="flex flex-col gap-2">
@@ -18,7 +19,7 @@ export const LobbyHeader = ({ playerCount, isHost }: LobbyHeaderProps) => {
         </h3>
       </div>
       <div className="flex items-center gap-2">
-        <LeaveGameAlert />
+        <LeaveGameAlert gameId={gameId} />
         <Button disabled={!isHost} variant="destructive">
           <Play />
           <span>Start Game</span>
