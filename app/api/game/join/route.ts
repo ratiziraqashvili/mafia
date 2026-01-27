@@ -1,5 +1,4 @@
 import { auth } from "@/lib/auth/auth";
-import { generateSeatNumber } from "@/lib/game/generate-seat-number";
 import { prisma } from "@/lib/db/prisma";
 import { NextResponse } from "next/server";
 
@@ -88,16 +87,6 @@ export async function POST(req: Request) {
             { status: 400 }
         )
     }
-
-    const seatNumber = await generateSeatNumber(gameSession.id)
-
-    await prisma.player.create({
-        data: {
-            userId: session.user.id,
-            gameId: gameSession.id,
-            seatNumber,
-        }
-    })
 
     return NextResponse.json(
         { gameId: gameSession.id },
