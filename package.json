@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "ws": "tsx ws-server.ts",
+    "ws:watch": "tsx watch ws-server.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -33,10 +35,12 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-hook-form": "^7.67.0",
+    "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "tsx": "^4.21.0",
     "zod": "^4.1.13",
     "zustand": "^5.0.9"
   },
@@ -47,7 +51,8 @@
     "@types/pg": "^8.15.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "baseline-browser-mapping": "^2.9.11",
+    "@types/socket.io": "^3.0.1",
+    "baseline-browser-mapping": "^2.9.19",
     "eslint": "^9",
     "eslint-config-next": "16.0.5",
     "prisma": "^7.0.1",
