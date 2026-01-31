@@ -31,10 +31,6 @@ const LobbyPage = async ({ params }: { params: { gameId: string } }) => {
     throw new Error("This game does not exist")
   }
 
-  // if (!currentPlayersIds.includes(currentUser!.id)) {
-  //   throw new Error("You are not allowed to access this page")
-  // }
-
   return (
     <div className="h-screen max-w-6xl mx-auto flex flex-col gap-8 lg:px-2 px-5">
       <LobbyHeader gameId={gameId} isHost={isHost} playerCount={playerCount} />

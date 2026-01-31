@@ -17,6 +17,7 @@ export const LobbyPlayerCard = ({
   isHost,
   isReady,
 }: LobbyPlayerCardProps) => {
+
   return (
     <div
       className={cn(

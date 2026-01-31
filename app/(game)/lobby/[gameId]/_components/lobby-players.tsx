@@ -22,7 +22,7 @@ export const LobbyPlayers = ({
   isHost,
   hostId,
   gameId,
-  userId
+  userId,
 }: LobbyPlayersProps) => {
   const [players, setPlayers] = useState(initialPlayers);
 
@@ -34,8 +34,6 @@ export const LobbyPlayers = ({
 
     //Listen for new players
     socket.on("player_joined", (data) => {
-      console.log("Recieved player_joined: ", data);
-
       if (!data || !data.userId) {
         console.error("Invalid player_joined data: ", data);
         return;
@@ -53,9 +51,13 @@ export const LobbyPlayers = ({
     };
   }, [gameId, userId]);
 
+  const playersWithCorrectSeat = new Array(12);
+
+  players.forEach((p) => (playersWithCorrectSeat[p.seatNumber] = p));
+
   return (
     <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5 ">
-      {players.map((player) => {
+      {playersWithCorrectSeat.map((player) => {
         const isHostPlayer = player.userId === hostId;
 
         return (
