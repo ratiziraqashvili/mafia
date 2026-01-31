@@ -6,3 +6,9 @@ export type CurrentLobbyPlayers = ({
         image: string | null,
     }
 } & Player)[]
+
+export type LobbyPlayer = {
+    userId: string;
+    socketId: string;
+    ready: boolean;
+}

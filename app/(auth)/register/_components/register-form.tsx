@@ -70,8 +70,7 @@ export const RegisterForm = () => {
         name: values.username,
         email: values.email,
         password: values.password,
-        image:
-          "https://www.mafia.ge/templates/assets/images/demo/users/user.jpg",
+        image: "",
         callbackURL: "/",
       },
       {

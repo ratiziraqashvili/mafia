@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import http from "http";
 import { prisma } from "./lib/db/prisma";
 import { generateSeatNumber } from "./lib/game/generate-seat-number";
+import { LobbyPlayer } from "./types";
 
 const server = http.createServer();
 const io = new Server(server, {
@@ -17,7 +18,7 @@ io.on("connection", (socket) => {
         try {
             const seatNumber = await generateSeatNumber(gameId);
                 
-            await prisma.player.upsert({
+           await prisma.player.upsert({
                 where: {
                     userId_gameId: {
                         userId,
@@ -51,6 +52,34 @@ io.on("connection", (socket) => {
             io.to(room).emit("player_joined", payload)
         } catch (error) {
             console.error("Error in join_lobby:", error);
+        }
+    })
+
+                            //  gameId      userId
+    const readyStatus = new Map<string, Map<string, LobbyPlayer>>()
+
+    socket.on("player_ready", ({ gameId, userId, ready }: { gameId: string; userId: string; ready: boolean }) => {
+        try {
+            const room = `game:${gameId}`;
+            const socketId = socket.id;
+
+            let gameMap = readyStatus.get(gameId);
+
+            if (!gameMap) {
+                gameMap = new Map<string, LobbyPlayer>();
+                readyStatus.set(gameId, gameMap);
+            }
+
+            gameMap.set(userId, { userId, socketId, ready });
+
+            const allReady = Array.from(gameMap.values()).map(p => ({
+                userId: p.userId,
+                ready: p.ready
+            }));
+
+            io.to(room).emit("player_ready_completed", allReady)
+        } catch (error) {
+            console.error("Error in player_ready")
         }
     })
     
