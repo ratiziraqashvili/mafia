@@ -59,28 +59,26 @@ io.on("connection", (socket) => {
     const readyStatus = new Map<string, Map<string, LobbyPlayer>>()
 
     socket.on("player_ready", ({ gameId, userId, ready }: { gameId: string; userId: string; ready: boolean }) => {
-        try {
-            const room = `game:${gameId}`;
-            const socketId = socket.id;
+        const room = `game:${gameId}`;
+        const socketId = socket.id;
 
-            let gameMap = readyStatus.get(gameId);
+        let gameMap = readyStatus.get(gameId);
 
-            if (!gameMap) {
-                gameMap = new Map<string, LobbyPlayer>();
-                readyStatus.set(gameId, gameMap);
-            }
-
-            gameMap.set(userId, { userId, socketId, ready });
-
-            const allReady = Array.from(gameMap.values()).map(p => ({
-                userId: p.userId,
-                ready: p.ready
-            }));
-
-            io.to(room).emit("player_ready_completed", allReady)
-        } catch (error) {
-            console.error("Error in player_ready")
+        if (!gameMap) {
+            gameMap = new Map<string, LobbyPlayer>();
+            readyStatus.set(gameId, gameMap);
         }
+
+        gameMap.set(userId, { userId, socketId, ready });
+
+        const allReady = Array.from(gameMap.values()).map(p => ({
+            userId: p.userId,
+            ready: p.ready
+        }));
+
+        console.log("Allready ---->>>>>>", allReady)
+
+        io.to(room).emit("player_ready_completed", allReady)
     })
     
     // Leave a lobby

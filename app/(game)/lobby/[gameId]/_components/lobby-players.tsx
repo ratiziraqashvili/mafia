@@ -19,7 +19,6 @@ let socket: ReturnType<typeof io>;
 export const LobbyPlayers = ({
   players: initialPlayers,
   isReady,
-  isHost,
   hostId,
   gameId,
   userId,

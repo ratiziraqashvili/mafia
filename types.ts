@@ -12,3 +12,8 @@ export type LobbyPlayer = {
     socketId: string;
     ready: boolean;
 }
+
+export type AllReadyPlayers = {
+    userId: string;
+    ready: boolean;
+}[];
