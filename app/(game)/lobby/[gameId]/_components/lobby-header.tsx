@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Play, Users } from "lucide-react";
 import { LeaveGameAlert } from "./leave-game-alert";
 import { io } from "socket.io-client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AllReadyPlayers } from "@/types";
 
 interface LobbyHeaderProps {
@@ -24,13 +24,16 @@ export const LobbyHeader = ({
 }: LobbyHeaderProps) => {
   const [readyPlayers, setReadyPlayers] = useState<AllReadyPlayers>();
 
-  const onReady = () => {
+  useEffect(() => {
     socket = io(process.env.NEXT_PUBLIC_WEB_SOCKET_URL!);
 
-    //emmiting players to ready
-    socket.emit("player_ready", { gameId, userId, ready: true });
+    return () => {
+      socket?.disconnect();
+    };
+  }, [])
 
-    console.log(socket);
+  const onReady = () => {
+    socket.emit("player_ready", { gameId, userId, ready: true });
   };
 
   return (

@@ -59,26 +59,31 @@ io.on("connection", (socket) => {
     const readyStatus = new Map<string, Map<string, LobbyPlayer>>()
 
     socket.on("player_ready", ({ gameId, userId, ready }: { gameId: string; userId: string; ready: boolean }) => {
-        const room = `game:${gameId}`;
-        const socketId = socket.id;
+        try {
+            const room = `game:${gameId}`;
+            const socketId = socket.id;
 
-        let gameMap = readyStatus.get(gameId);
+            let gameMap = readyStatus.get(gameId);
 
-        if (!gameMap) {
-            gameMap = new Map<string, LobbyPlayer>();
-            readyStatus.set(gameId, gameMap);
+            if (!gameMap) {
+                gameMap = new Map<string, LobbyPlayer>();
+                readyStatus.set(gameId, gameMap);
+            }
+
+            gameMap.set(userId, { userId, socketId, ready });
+
+            const allReady = Array.from(gameMap.values()).map(p => ({
+                userId: p.userId,
+                ready: p.ready
+            }));
+
+            console.log("Allready ---->>>>>>", allReady)
+
+            io.to(room).emit("player_ready_completed", allReady)
+        } catch (error) {
+            console.error("Error in player_ready")
+            socket.emit("error", { message: "Failed to process ready status" })
         }
-
-        gameMap.set(userId, { userId, socketId, ready });
-
-        const allReady = Array.from(gameMap.values()).map(p => ({
-            userId: p.userId,
-            ready: p.ready
-        }));
-
-        console.log("Allready ---->>>>>>", allReady)
-
-        io.to(room).emit("player_ready_completed", allReady)
     })
     
     // Leave a lobby
