@@ -25,7 +25,6 @@ const LobbyPage = async ({ params }: { params: { gameId: string } }) => {
   const playerCount = await getPlayerCount(gameId);
   const isHost = await isCurrentUserHost(currentUser?.id!, gameId);
   const currentPlayers = await getCurrentPlayers(gameId);
-  const currentPlayersIds = [...currentPlayers.map(p => p.userId)]
 
   if (!game) {
     throw new Error("This game does not exist")
@@ -33,7 +32,7 @@ const LobbyPage = async ({ params }: { params: { gameId: string } }) => {
 
   return (
     <div className="h-screen max-w-6xl mx-auto flex flex-col gap-8 lg:px-2 px-5">
-      <LobbyHeader gameId={gameId} isHost={isHost} playerCount={playerCount} />
+      <LobbyHeader userId={currentUser?.id} gameId={gameId} isHost={isHost} playerCount={playerCount} />
       <LoadingIndicator playerCount={playerCount} />
       <LobbyPlayers
         userId={currentUser?.id}

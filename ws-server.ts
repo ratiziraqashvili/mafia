@@ -77,9 +77,12 @@ io.on("connection", (socket) => {
                 ready: p.ready
             }));
 
+            console.log("Allready ---->>>>>>", allReady)
+
             io.to(room).emit("player_ready_completed", allReady)
         } catch (error) {
             console.error("Error in player_ready")
+            socket.emit("error", { message: "Failed to process ready status" })
         }
     })
     
