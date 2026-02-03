@@ -38,6 +38,8 @@ export const LobbyPlayers = ({
         return;
       }
 
+      console.log(data);
+
       const { userId, username, image } = data;
       setPlayers((prev) => {
         if (prev.some((p) => p.userId === userId)) return prev;
@@ -56,7 +58,7 @@ export const LobbyPlayers = ({
 
   return (
     <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5 ">
-      {playersWithCorrectSeat.map((player) => {
+      {players.map((player) => {
         const isHostPlayer = player.userId === hostId;
 
         return (
