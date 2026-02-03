@@ -33,7 +33,7 @@ export async function POST(req: Request) {
         return NextResponse.json(
         { message: "Game not found" },
         { status: 404 }
-    )
+        )
     }
 
     const existingPlayer = await prisma.player.findUnique({

@@ -5,7 +5,7 @@ import { Play, Users } from "lucide-react";
 import { LeaveGameAlert } from "./leave-game-alert";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
-import { AllReadyPlayers } from "@/types";
+import { api } from "@/lib/api/client";
 
 interface LobbyHeaderProps {
   isHost: boolean;
@@ -22,18 +22,17 @@ export const LobbyHeader = ({
   gameId,
   userId,
 }: LobbyHeaderProps) => {
-  const [readyPlayers, setReadyPlayers] = useState<AllReadyPlayers>();
+  const [ready, setReady] = useState(false);
 
-  useEffect(() => {
-    socket = io(process.env.NEXT_PUBLIC_WEB_SOCKET_URL!);
+  const onReady = async () => {
+    try {
+      await api.post("/game/ready", { gameId })
 
-    return () => {
-      socket?.disconnect();
-    };
-  }, [])
-
-  const onReady = () => {
-    socket.emit("player_ready", { gameId, userId, ready: true });
+      
+      setReady(true);
+    } catch (error) {
+      console.error("error in lobby-header", error)
+    }
   };
 
   return (
@@ -53,7 +52,7 @@ export const LobbyHeader = ({
             <span>Start Game</span>
           </Button>
         ) : (
-          <Button onClick={onReady} variant="success">
+          <Button disabled={ready} onClick={onReady} variant="success">
             <Play />
             <span>Ready</span>
           </Button>
