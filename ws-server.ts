@@ -57,9 +57,8 @@ io.on("connection", (socket) => {
     socket.on("player_ready", ({ gameId, userId, ready }: { gameId: string; userId: string; ready: boolean }) => {
         try {
             const room = `game:${gameId}`;
-            const socketId = socket.id;
-
-            
+           
+             
 
             // io.to(room).emit("player_ready_completed", allReady)
         } catch (error) {

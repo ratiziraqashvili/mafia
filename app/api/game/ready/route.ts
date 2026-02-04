@@ -62,5 +62,9 @@ export async function POST(req: Request) {
 
     } catch (error) {
         console.error("error in /api/game/ready", error)
+        return NextResponse.json(
+            { message: "Internal Server Error" },
+            { status: 500 }
+        )
     }
 }
